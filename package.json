@@ -2,7 +2,7 @@
   "name": "beepjs",
   "version": "0.0.1",
   "description": "Simple wrapper around the WebAudio API",
-  "main": "index.js",
+  "main": "build/beep.js",
   "scripts": {
     "buildEs5": "babel ./src/beep.js > ./build/beep.js",
     "buildMin": "babel ./src/beep.js | uglifyjs --screw-ie8 --compress unsafe,keep_fargs=false --mangle --mangle-props --mangle-regex=\"/^_/\" -- > ./build/beep.min.js",
