@@ -1,0 +1,36 @@
+{
+  "name": "beepjs",
+  "version": "0.0.1",
+  "description": "Simple wrapper around the WebAudio API",
+  "main": "index.js",
+  "scripts": {
+    "buildEs5": "babel ./src/beep.js > ./build/beep.js",
+    "buildMin": "babel ./src/beep.js | uglifyjs --screw-ie8 --compress unsafe,keep_fargs=false --mangle --mangle-props --mangle-regex=\"/^_/\" -- > ./build/beep.min.js",
+    "build": "npm run buildEs5 && npm run buildMin",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "babel": {
+    "presets": [
+      "es2015-loose"
+    ]
+  },
+  "devDependencies": {
+    "babel-cli": "6.9.0",
+    "babel-preset-es2015": "6.9.0",
+    "babel-preset-es2015-loose": "7.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Klathmon/Beep.js.git"
+  },
+  "keywords": [
+    "WebAudio",
+    "beep"
+  ],
+  "author": "Gregory Benner <gregbenner1@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Klathmon/Beep.js/issues"
+  },
+  "homepage": "https://github.com/Klathmon/Beep.js#readme"
+}
