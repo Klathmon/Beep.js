@@ -1,6 +1,6 @@
 {
   "name": "beepjs",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Simple wrapper around the WebAudio API",
   "main": "build/beep.js",
   "scripts": {
