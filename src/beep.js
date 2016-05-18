@@ -7,8 +7,8 @@ export default class Beep {
    * @return {Object}
    */
   constructor (volume = 1, waveType = 'square') {
-    this.volume = volume
-    this.waveType = waveType
+    this._volume = volume
+    this._waveType = waveType
   }
 
   /**
@@ -19,8 +19,8 @@ export default class Beep {
    * @return {Promise}
    */
   init () {
-    if (typeof this.audioContext === 'undefined') {
-      this.audioContext = this._getAudioContext()
+    if (typeof this._audioContext === 'undefined') {
+      this._audioContext = this._getAudioContext()
       return Promise.resolve()
     } else {
       return Promise.resolve()
@@ -40,22 +40,25 @@ export default class Beep {
       return new Promise((resolve, reject) => {
         const gainNode = this._createGainNode()
         const oscillatorNode = this._createOscillatorNode()
-        oscillatorNode.onended = () => resolve()
+        oscillatorNode.onended = () => resolve() // Call resolve() when the beep is completely finished
 
-        const startTime = this.audioContext.currentTime
-        const [firstFreq, firstTime] = freqArray.shift()
+        const startTime = this._audioContext.currentTime
+        const [firstFreq, firstTime] = freqArray.shift() // Shift off the first element of the array as the first note
         let cumulativeTime = startTime + this._msToS(firstTime)
-
         oscillatorNode.frequency.value = firstFreq
 
+        // Loop over the rest of the notes and tell the oscillatorNode to set the freq at the appropriate time
+        // If there was only one sound/duration tuple then there will be 0 elements in the array at this point and it will be skipped
         freqArray.forEach(([freq, time]) => {
           oscillatorNode.frequency.setValueAtTime(freq, cumulativeTime)
           cumulativeTime += this._msToS(time)
         })
 
+        // Connect the oscillatorNode to the destination (speaker output)
         oscillatorNode.connect(gainNode)
-        gainNode.connect(this.audioContext.destination)
+        gainNode.connect(this._audioContext.destination)
 
+        // And finally start and stop the beep at the correct times
         oscillatorNode.start(startTime)
         oscillatorNode.stop(cumulativeTime)
       })
@@ -64,30 +67,32 @@ export default class Beep {
 
   /**
    * Creates an OscillatorNode in a cross-platform way
+   * Also sets the waveType to what was given in the constructor
    * @return {object} oscillatorNode
    */
   _createOscillatorNode () {
-    const oscillatorNode = this.audioContext.createOscillator()
+    const oscillatorNode = this._audioContext.createOscillator()
 
     oscillatorNode.start = oscillatorNode.noteOn || oscillatorNode.start
     oscillatorNode.stop = oscillatorNode.noteOff || oscillatorNode.stop
 
-    oscillatorNode.type = this.waveType
+    oscillatorNode.type = this._waveType
 
     return oscillatorNode
   }
 
   /**
    * Creates an GainNode in a cross-platform way
+   * Also sets the volume to the constructor's value
    * @return {object} gainNode
    */
   _createGainNode () {
-    const gainNode = this.audioContext.createGain()
+    const gainNode = this._audioContext.createGain()
 
     gainNode.start = gainNode.noteOn || gainNode.start
     gainNode.stop = gainNode.noteOff || gainNode.stop
 
-    gainNode.gain.value = (this.volume)
+    gainNode.gain.value = (this._volume)
 
     return gainNode
   }
