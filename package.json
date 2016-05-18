@@ -7,6 +7,8 @@
     "buildEs5": "babel ./src/beep.js > ./build/beep.js",
     "buildMin": "babel ./src/beep.js | uglifyjs --screw-ie8 --compress unsafe,keep_fargs=false --mangle --mangle-props --mangle-regex=\"/^_/\" -- > ./build/beep.min.js",
     "build": "npm run buildEs5 && npm run buildMin",
+    "getVersion" : "node -e \"var fs = require('fs'); console.log(JSON.parse(fs.readFileSync('./package.json')).version)\"",
+    "tag": "npm run build && git tag -a \"V$(npm run getVersion)\" -m \"V$(npm run getVersion)\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "standard": {
