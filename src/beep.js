@@ -38,8 +38,8 @@ export default class Beep {
   beep (freqArray) {
     return this.init().then(() => {
       return new Promise((resolve, reject) => {
-        const gainNode = this._createGainNode()
-        const oscillatorNode = this._createOscillatorNode()
+        const gainNode = this._createGainNode(this._volume)
+        const oscillatorNode = this._createOscillatorNode(this._waveType)
         oscillatorNode.onended = () => resolve() // Call resolve() when the beep is completely finished
 
         const startTime = this._audioContext.currentTime
@@ -67,32 +67,32 @@ export default class Beep {
 
   /**
    * Creates an OscillatorNode in a cross-platform way
-   * Also sets the waveType to what was given in the constructor
+   * @param  {string} waveType       The type of the sound wave. Options are ['square', 'sine', 'triangle', 'sawtooth']
    * @return {object} oscillatorNode
    */
-  _createOscillatorNode () {
+  _createOscillatorNode (waveType) {
     const oscillatorNode = this._audioContext.createOscillator()
 
     oscillatorNode.start = oscillatorNode.noteOn || oscillatorNode.start
     oscillatorNode.stop = oscillatorNode.noteOff || oscillatorNode.stop
 
-    oscillatorNode.type = this._waveType
+    oscillatorNode.type = waveType
 
     return oscillatorNode
   }
 
   /**
    * Creates an GainNode in a cross-platform way
-   * Also sets the volume to the constructor's value
+   * @param  {float}  volume   The volume of the output.
    * @return {object} gainNode
    */
-  _createGainNode () {
+  _createGainNode (volume) {
     const gainNode = this._audioContext.createGain()
 
     gainNode.start = gainNode.noteOn || gainNode.start
     gainNode.stop = gainNode.noteOff || gainNode.stop
 
-    gainNode.gain.value = (this._volume)
+    gainNode.gain.value = volume
 
     return gainNode
   }
