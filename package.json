@@ -5,7 +5,7 @@
   "main": "build/beep.js",
   "scripts": {
     "buildEs5": "babel ./src/beep.js > ./build/beep.js",
-    "buildMin": "babel ./src/beep.js | uglifyjs --screw-ie8 --compress unsafe,keep_fargs=false --mangle --mangle-props --mangle-regex=\"/^_/\" -- > ./build/beep.min.js",
+    "buildMin": "babel ./src/beep.js | uglifyjs --screw-ie8 --compress unsafe,keep_fargs=false --mangle -- > ./build/beep.min.js",
     "build": "npm run buildEs5 && npm run buildMin",
     "publish": "sh ./publish.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
