@@ -1,3 +1,7 @@
+
+/**
+ * Beep class
+ */
 export default class Beep {
 
   /**
