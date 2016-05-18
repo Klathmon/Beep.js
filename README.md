@@ -34,6 +34,8 @@ beep.beep([[1000, 100]])
 * Whenever possible use the built-in array format for creating multiple tones. Callbacks in javascript are not precise enough and you will end up getting strange delays inbetween beeps.
 * A frequency of 0 will be 'silence' and can be used as breaks in the beep array method
 * the beep.init() call must happen from user interaction on iOS before any attempts to call beep.beep(...)
+* This is written in ES6, if you want to include the source file, use `include Beep from 'beepjs/src/beep'`
+* A pre-minified version is available at `beepjs/build/beep.min.js`
 
 ### License:
 The MIT License (MIT)
